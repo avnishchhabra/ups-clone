@@ -7,16 +7,17 @@ import MapView, { Marker } from "react-native-maps";
 
 type CardProps = {
   order: Order;
+  fullWidth?: boolean
 };
 
-const DeliveryCard = ({ order }: CardProps) => {
+const DeliveryCard = ({ order, fullWidth }: CardProps) => {
   const tw = useTailwind();
   return (
     <Card
       containerStyle={[
-        tw("rounded-lg my-2"),
+        tw(`${fullWidth ? "rounded-none m-0" : "rounded-lg"} my-2`),
         {
-          backgroundColor: "#59C1CC",
+          backgroundColor: fullWidth ? "#EB6A7C" : "#59C1CC",
           padding: 0,
           paddingTop: 16,
           shadowColor: "black",
@@ -26,7 +27,7 @@ const DeliveryCard = ({ order }: CardProps) => {
         },
       ]}
     >
-      <View>
+      <View style={fullWidth && {height: "100%"}}>
         <Icon name="box" type="entypo" color="white" size={50} />
         <View>
           <Text
@@ -39,7 +40,7 @@ const DeliveryCard = ({ order }: CardProps) => {
           </Text>
         </View>
         <Divider color="white" />
-      </View>
+      
 
       <View style={tw("mx-auto pb-5")}>
         <Text style={tw("text-base text-center text-white font-bold mt-5")}>
@@ -67,7 +68,7 @@ const DeliveryCard = ({ order }: CardProps) => {
       </View>
 
       <MapView
-        style={[tw("w-full"), { height: 200 }]}
+        style={[tw("w-full"), {flexGrow: 1}, !fullWidth && { height: 200 }]}
         initialRegion={{
           latitude: order.Lat,
           longitude: order.Lng,
@@ -84,6 +85,7 @@ const DeliveryCard = ({ order }: CardProps) => {
           />
         )}
       </MapView>
+      </View>
     </Card>
   );
 };
